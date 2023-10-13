@@ -116,10 +116,12 @@ SDL2.spec
 build
 
 # for Visual C++
-Debug/
-!Debug/*.png
-Release/
-!Release/*.png
+**/x64/Debug/*
+!**/x64/Debug/*.png
+
+**/x64/Release/*
+!**/x64/Release/*.png
+
 *.user
 *.ncb
 *.suo
