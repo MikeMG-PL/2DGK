@@ -27,7 +27,7 @@ public:
 		return nullptr;
 	}
 
-	//std::shared_ptr<Transform> GetTransform();
+	std::shared_ptr<Transform> GetTransform();
 
 	void AddComponent(Component& component);
 	//void RemoveComponent(const Component& component);
@@ -35,5 +35,5 @@ public:
 private:
 
 	std::vector<std::shared_ptr<Component>> components;
-	//std::shared_ptr<Transform> transform;
+	std::shared_ptr<Transform> transform;
 };

@@ -5,8 +5,9 @@
 
 GameObject::GameObject()
 {
-	//Transform transform;
-	//AddComponent(transform);
+	auto tf = std::make_shared<Transform>();
+	transform = tf;
+	AddComponent(*transform);
 	GameInstance::Get().RegisterObject(*this);
 }
 
@@ -15,10 +16,10 @@ std::vector<std::shared_ptr<Component>> GameObject::GetComponents()
 	return components;
 }
 
-/*std::shared_ptr<Transform> GameObject::GetTransform()
+std::shared_ptr<Transform> GameObject::GetTransform()
 {
 	return transform;
-}*/
+}
 
 void GameObject::AddComponent(Component& component)
 {
