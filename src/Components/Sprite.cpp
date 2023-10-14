@@ -3,9 +3,9 @@
 #include "ImageLoader.h"
 #include "Engine/GameInstance.h"
 
-Sprite::Sprite(const std::string& path)
+Sprite::Sprite(const std::string& path, SDL_Renderer* renderer)
 {
-	loadMedia(path);
+	loadMedia(path, renderer);
 }
 
 Sprite::~Sprite()
@@ -14,13 +14,12 @@ Sprite::~Sprite()
 	texture = NULL;
 }
 
-bool Sprite::loadMedia(const std::string& path)
+bool Sprite::loadMedia(const std::string& path, SDL_Renderer* renderer)
 {
 	// Loading success flag
 	bool success = true;
 
 	// Load PNG texture
-	SDL_Renderer* renderer = GameInstance::Get().GetRenderer();
 	texture = loadTexture(path, renderer);
 	if (texture == NULL)
 	{

@@ -1,8 +1,6 @@
 #include "Engine/GameInstance.h"
-
 #include <iostream>
 #include <SDL_image.h>
-
 #include "Engine/Component.h"
 #include "Engine/GameObject.h"
 

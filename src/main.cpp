@@ -67,7 +67,8 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		GameObject player; Sprite sprite("cr.png");
+		SDL_Renderer* renderer = gameInstance.GetRenderer();
+		GameObject player; Sprite sprite("cr.png", renderer);
 		player.AddComponent(sprite);
 
 		// While application is running
