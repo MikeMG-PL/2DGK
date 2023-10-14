@@ -7,7 +7,7 @@ void Component::SetParent(const GameObject& obj)
 	parent = std::make_shared<GameObject>(obj);
 }
 
-std::shared_ptr<GameObject> Component::GetParent() const
+std::weak_ptr<GameObject> Component::GetParent() const
 {
 	return parent;
 }
