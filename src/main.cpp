@@ -58,18 +58,23 @@ int main(int argc, char* args[])
 	bool smoothMovement = true;
 	float lerpT = 0;
 
-	GameInstance gameInstance = GameInstance::Get();
 
 	// Start up SDL and create window
-	if (!gameInstance.StartGame(SCREEN_WIDTH, SCREEN_HEIGHT))
+	if (!GameInstance::Get().StartGame(SCREEN_WIDTH, SCREEN_HEIGHT))
 	{
 		printf("Failed to initialize!\n");
 	}
 	else
 	{
-		SDL_Renderer* renderer = gameInstance.GetRenderer();
-		GameObject player; Sprite sprite("cr.png", renderer);
-		player.AddComponent(sprite);
+		auto player1 = GameObject::CreateObject();
+		player1->AddComponent<Sprite>("cr.png", 100, 100);
+		player1->GetTransform()->position.x = 25;
+		player1->GetTransform()->position.y = 25;
+
+		auto player2 = GameObject::CreateObject();
+		player2->AddComponent<Sprite>("sq.png", 200, 200);
+		player2->GetTransform()->position.x = 300;
+		player2->GetTransform()->position.y = 200;
 
 		// While application is running
 		while (!quit)
@@ -187,20 +192,13 @@ int main(int argc, char* args[])
 				SDL_Delay(FRAMETIME - deltaTime); // Delay for the remaining time
 			}
 
-			// Clear screen
-			gameInstance.ClearScreen();
-
-			/*// Render textures to screen
-			circleRect.x = static_cast<int>(round(circlePosition.x)); // Round the float to the nearest integer to avoid truncation
-			circleRect.y = static_cast<int>(round(circlePosition.y));
-			squareRect.x = static_cast<int>(round(squarePosition.x));
-			squareRect.y = static_cast<int>(round(squarePosition.y));
-
-			SDL_RenderCopy(gRenderer, milk, NULL, &squareRect);
-			SDL_RenderCopy(gRenderer, gTexture, NULL, &circleRect);*/
+			GameInstance::Get().ClearScreen();
+			GameInstance::Get().UpdateGame();
+			// TODO: It's not fixed yet
+			GameInstance::Get().UpdateGameFixed();
 
 			// Update screen
-			gameInstance.UpdateScreen();
+			GameInstance::Get().UpdateScreen();
 		}
 
 	}

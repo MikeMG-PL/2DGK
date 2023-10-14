@@ -58,6 +58,11 @@ bool GameInstance::init(int X, int Y)
 	return success;
 }
 
+GameInstance::~GameInstance()
+{
+	close();
+}
+
 GameInstance& GameInstance::Get()
 {
 	static GameInstance instance;
@@ -70,17 +75,17 @@ bool GameInstance::StartGame(int windowX, int windowY)
 	return init(windowX, windowY);
 }
 
-void GameInstance::RegisterObject(const GameObject& obj)
+void GameInstance::RegisterObject(std::shared_ptr<GameObject> const& obj)
 {
-	auto objPtr = std::make_shared<GameObject>(obj);
-	allGameObjects.push_back(objPtr);
+	allGameObjects.emplace_back(obj);
 }
 
 void GameInstance::UpdateGame()
 {
 	for (const auto& gameObjectPtr : allGameObjects)
 	{
-		for(const auto& componentPtr : gameObjectPtr->GetComponents())
+		auto allComponents = gameObjectPtr->GetComponents();
+		for (const auto& componentPtr : allComponents)
 		{
 			componentPtr.get()->Update();
 		}

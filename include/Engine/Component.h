@@ -7,13 +7,14 @@ class Component
 {
 public:
 
-	void SetParent(const GameObject& obj);
-	std::weak_ptr<GameObject> GetParent() const;
+	void SetParent(std::shared_ptr<GameObject> obj);
+	const std::shared_ptr<GameObject>& GetParent() const;
 	virtual void Update() {}
 	virtual void FixedUpdate() {}
 	virtual ~Component() = default;
+	std::shared_ptr<GameObject> parent;
 
 private:
 
-	std::weak_ptr<GameObject> parent;
+	
 };

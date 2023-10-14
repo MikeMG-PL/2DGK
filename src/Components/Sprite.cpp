@@ -2,10 +2,14 @@
 #include <SDL_render.h>
 #include "ImageLoader.h"
 #include "Engine/GameInstance.h"
+#include "Engine/GameObject.h"
 
-Sprite::Sprite(const std::string& path, SDL_Renderer* renderer)
+Sprite::Sprite(const std::string& path, int w, int h)
 {
-	loadMedia(path, renderer);
+	this->w = w;
+	this->h = h;
+
+	loadMedia(path);
 }
 
 Sprite::~Sprite()
@@ -14,13 +18,29 @@ Sprite::~Sprite()
 	texture = NULL;
 }
 
-bool Sprite::loadMedia(const std::string& path, SDL_Renderer* renderer)
+void Sprite::Update()
+{
+	Component::Update();
+
+	// Rendering code
+	std::shared_ptr<GameObject> parentPtr = GetParent();
+	Transform t = *parentPtr->GetTransform();
+
+	rect.x = static_cast<int>(round(t.position.x));
+	rect.y = static_cast<int>(round(t.position.y));
+	rect.w = w;
+	rect.h = h;
+
+	SDL_RenderCopy(GameInstance::Get().GetRenderer(), texture, NULL, &rect);
+}
+
+bool Sprite::loadMedia(const std::string& path)
 {
 	// Loading success flag
 	bool success = true;
 
 	// Load PNG texture
-	texture = loadTexture(path, renderer);
+	texture = loadTexture(path, GameInstance::Get().GetRenderer());
 	if (texture == NULL)
 	{
 		printf("Failed to load texture image!\n");

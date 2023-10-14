@@ -5,10 +5,7 @@
 
 GameObject::GameObject()
 {
-	auto tf = std::make_shared<Transform>();
-	transform = tf;
-	AddComponent(*transform);
-	GameInstance::Get().RegisterObject(*this);
+	transform = std::make_shared<Transform>();
 }
 
 std::vector<std::shared_ptr<Component>> GameObject::GetComponents()
@@ -21,11 +18,11 @@ std::shared_ptr<Transform> GameObject::GetTransform()
 	return transform;
 }
 
-void GameObject::AddComponent(Component& component)
+std::shared_ptr<GameObject> GameObject::CreateObject()
 {
-	auto compPtr = std::make_shared<Component>(component);
-	components.push_back(compPtr);
-	component.SetParent(*this);
+	auto gameObject = std::make_shared<GameObject>();
+	GameInstance::Get().RegisterObject(gameObject);
+	return gameObject;
 }
 
 /*			IN PROGRESS
