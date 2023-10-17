@@ -47,15 +47,13 @@ int main(int argc, char* args[])
 	{
 		auto player1 = GameObject::CreateObject();
 		player1->AddComponent<Sprite>("sq.png", 100, 100);
-		player1->AddComponent<Input>();
-		player1->GetComponent<Input>()->allowInput = true;
+		player1->AddComponent<Input>(0.97f, 1000, false, true);		// smooth, speed, lerpToMouse, allowInput
 		player1->GetTransform()->position.x = 25;
 		player1->GetTransform()->position.y = 25;
 
 		auto player2 = GameObject::CreateObject();
-		player2->AddComponent<Sprite>("cr.png", 200, 200);
-		player2->AddComponent<Input>();
-		player2->GetComponent<Input>()->lerpToMouse = true;
+		player2->AddComponent<Sprite>("cr.png", 200, 200);			// smooth, speed, lerpToMouse, allowInput
+		player2->AddComponent<Input>(0.0f, 0, true, false);
 		player2->GetTransform()->position.x = 300;
 		player2->GetTransform()->position.y = 200;
 
