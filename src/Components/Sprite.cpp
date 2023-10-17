@@ -34,6 +34,11 @@ void Sprite::Update()
 	SDL_RenderCopy(GameInstance::Get().GetRenderer(), texture, NULL, &rect);
 }
 
+glm::vec2 Sprite::GetSize() const
+{
+	return {w, h};
+}
+
 bool Sprite::loadMedia(const std::string& path)
 {
 	// Loading success flag

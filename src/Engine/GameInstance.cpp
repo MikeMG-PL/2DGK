@@ -113,6 +113,19 @@ void GameInstance::UpdateScreen()
 	SDL_RenderPresent(renderer);
 }
 
+void GameInstance::Count()
+{
+	LAST = NOW;
+	NOW = SDL_GetPerformanceCounter();
+
+	deltaTime = (NOW - LAST) * 1000 / static_cast<float>(SDL_GetPerformanceFrequency()); // Convert to seconds for more natural movement speeds
+}
+
+float GameInstance::GetDeltaTime() const
+{
+	return deltaTime;
+}
+
 SDL_Renderer* GameInstance::GetRenderer() const
 {
 	return renderer;

@@ -19,6 +19,9 @@ public:
 	void UpdateGameFixed();
 	void ClearScreen();
 	void UpdateScreen();
+	void Count();
+	float GetDeltaTime() const;
+
 	SDL_Renderer* GetRenderer() const;
 	std::vector<std::shared_ptr<GameObject>> allGameObjects;
 
@@ -26,6 +29,10 @@ private:
 
 	SDL_Renderer* renderer;
 	SDL_Window* window;
+
+	Uint64 NOW = SDL_GetPerformanceCounter();
+	Uint64 LAST = 0;
+	float deltaTime = 0;
 
 	bool init(int X, int Y);
 	void close();

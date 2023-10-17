@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL_rect.h>
 #include <string>
+#include <glm/vec2.hpp>
+
 #include "Engine/Component.h"
 
 struct SDL_Texture;
@@ -13,6 +15,7 @@ public:
 	Sprite(const std::string& path, int w, int h);
 	~Sprite() override;
 	void Update() override;
+	glm::vec2 GetSize() const;
 
 private:
 	SDL_Texture* texture;
