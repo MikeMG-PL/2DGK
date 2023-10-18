@@ -21,6 +21,7 @@
 #include "Components/Sprite.h"
 #include "Engine/GameInstance.h"
 #include "Engine/GameObject.h"
+#include "Engine/LevelLoader.h"
 
 // Screen dimension constants
 const int SCREEN_WIDTH = 1600;
@@ -45,6 +46,8 @@ int main(int argc, char* args[])
 	}
 	else
 	{
+		LevelLoader::Get().LoadLevel("level.txt");
+
 		auto player1 = GameObject::CreateObject();
 		player1->AddComponent<Sprite>("sq.png", 100, 100);
 		player1->AddComponent<Input>(0.97f, 1000, false, true);		// smooth, speed, lerpToMouse, allowInput
@@ -79,7 +82,7 @@ int main(int argc, char* args[])
 
 			GameInstance::Get().ClearScreen();
 			GameInstance::Get().UpdateGame();
-			// TODO: It's not fixed yet
+			// TODO: It's not fixed interval yet
 			GameInstance::Get().UpdateGameFixed();
 
 			// Update screen

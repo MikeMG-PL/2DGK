@@ -21,56 +21,56 @@ void Input::ProcessInput()
 	{
 		inputDirection.y -= 1.0f;
 		smoothMovement = true;
-		std::cout << "UP, smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
+		// std::cout << "UP, smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
 	}
 
 	if (state[SDL_SCANCODE_S])
 	{
 		inputDirection.y += 1.0f;
 		smoothMovement = true;
-		std::cout << "DOWN, smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
+		// std::cout << "DOWN, smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
 	}
 
 	if (state[SDL_SCANCODE_A])
 	{
 		inputDirection.x -= 1.0f;
 		smoothMovement = true;
-		std::cout << "LEFT, smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
+		// std::cout << "LEFT, smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
 	}
 
 	if (state[SDL_SCANCODE_D])
 	{
 		inputDirection.x += 1.0f;
 		smoothMovement = true;
-		std::cout << "RIGHT, smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
+		// std::cout << "RIGHT, smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
 	}
 
 	if (state[SDL_SCANCODE_UP])
 	{
 		inputDirection.y -= 1.0f;
 		smoothMovement = false;
-		std::cout << "UP, NOT smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
+		// std::cout << "UP, NOT smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
 	}
 
 	if (state[SDL_SCANCODE_DOWN])
 	{
 		inputDirection.y += 1.0f;
 		smoothMovement = false;
-		std::cout << "DOWN, NOT smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
+		// std::cout << "DOWN, NOT smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
 	}
 
 	if (state[SDL_SCANCODE_LEFT])
 	{
 		inputDirection.x -= 1.0f;
 		smoothMovement = false;
-		std::cout << "LEFT, NOT smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
+		// std::cout << "LEFT, NOT smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
 	}
 
 	if (state[SDL_SCANCODE_RIGHT])
 	{
 		inputDirection.x += 1.0f;
 		smoothMovement = false;
-		std::cout << "RIGHT, NOT smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
+		// std::cout << "RIGHT, NOT smooth, delta time: " << GameInstance::Get().GetDeltaTime() << " ms" << std::endl;
 	}
 
 	if (glm::length(inputDirection) > 0.0f)
@@ -108,7 +108,7 @@ void Input::LerpToMouse()
 	lastMouse.x = mx;
 	lastMouse.y = my;
 
-	std::cout << "Mouse X: " << mx << ", Mouse Y: " << my << std::endl;
+	// std::cout << "Mouse X: " << mx << ", Mouse Y: " << my << std::endl;
 }
 
 void Input::FixedUpdate()
