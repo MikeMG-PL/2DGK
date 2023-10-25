@@ -12,7 +12,7 @@ LevelLoader& LevelLoader::Get()
 	return instance;
 }
 
-void LevelLoader::LoadLevel(const std::string& filepath)
+std::vector<std::shared_ptr<GameObject>> LevelLoader::LoadLevel(const std::string& filepath)
 {
 	std::ifstream file(filepath);
 	std::stringstream buffer;
@@ -21,6 +21,8 @@ void LevelLoader::LoadLevel(const std::string& filepath)
 	std::string line;
 	unsigned int linesPassed = 0;
 
+	std::vector<std::shared_ptr<GameObject>> tiles;
+
 	while (std::getline(buffer, line))
 	{
 		std::cout << line << std::endl;
@@ -28,26 +30,33 @@ void LevelLoader::LoadLevel(const std::string& filepath)
 		for (int i = 0; i < line.size(); i++)
 		{
 			char c = line[i];
-			auto w = GameObject::CreateObject();
-			switch (c)
+			if(c != ' ')
 			{
-			case '#':
-				w->AddComponent<Sprite>(this->bricks);
-				break;
+				auto w = GameObject::CreateObject();
+				switch (c)
+				{
+				case '#':
+					w->AddComponent<Sprite>(this->bricks);
+					break;
 
-			case '$':
-				w->AddComponent<Sprite>(this->wood);
-				break;
+				case '$':
+					w->AddComponent<Sprite>(this->wood);
+					break;
 
-			default:
-				break;
-			}
-			if(w->GetComponent<Sprite>())
-			{
-				w->GetTransform()->position.x = i * w->GetComponent<Sprite>()->GetSize().x;
-				w->GetTransform()->position.y = linesPassed * w->GetComponent<Sprite>()->GetSize().y;
+				default:
+					break;
+				}
+
+				if (w->GetComponent<Sprite>())
+				{
+					w->GetTransform()->position.x = i * w->GetComponent<Sprite>()->GetSize().x;
+					w->GetTransform()->position.y = linesPassed * w->GetComponent<Sprite>()->GetSize().y;
+				}
+				tiles.emplace_back(w);
 			}
 		}
 		linesPassed++;
 	}
+
+	return tiles;
 }

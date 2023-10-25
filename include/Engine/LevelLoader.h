@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "Components/Sprite.h"
 
@@ -14,7 +15,7 @@ public:
 
 	static LevelLoader& Get();
 
-	void LoadLevel(const std::string& filepath);
+	std::vector<std::shared_ptr<GameObject>> LoadLevel(const std::string& filepath);
 
 private:
 
