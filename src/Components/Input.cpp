@@ -86,29 +86,29 @@ void Input::ProcessInput()
 	GetParent()->GetTransform()->position += velocity;
 }
 
-void Input::LerpToMouse()
+glm::vec2 Input::GetMousePosition()
 {
 	int mx = 0, my = 0;
 	SDL_GetMouseState(&mx, &my);
-
-	if (mx != lastMouse.x || my != lastMouse.y) // Check if the mouse has moved
-	{
-		startPosition = GetParent()->GetTransform()->position; // Set the start position to the current square position
-		lerpT = 0; // Reset the lerpT value
-	}
-
-	lerpT += GameInstance::Get().GetDeltaTime() / 1000; // Increment the lerpT value
-
-	// Ensure lerpT does not exceed 1.0
-	lerpT = glm::clamp(lerpT, 0.0f, 1.0f);
-
-	GetParent()->GetTransform()->position.x = lerp(startPosition.x, mx - GetParent()->GetComponent<Sprite>()->GetSize().x / 2, lerpT);
-	GetParent()->GetTransform()->position.y = lerp(startPosition.y, my - GetParent()->GetComponent<Sprite>()->GetSize().y / 2, lerpT);
-
-	lastMouse.x = mx;
-	lastMouse.y = my;
-
-	// std::cout << "Mouse X: " << mx << ", Mouse Y: " << my << std::endl;
+	return {mx, my};
+	// if (mx != lastMouse.x || my != lastMouse.y) // Check if the mouse has moved
+	// {
+	// 	startPosition = GetParent()->GetTransform()->position; // Set the start position to the current square position
+	// 	lerpT = 0; // Reset the lerpT value
+	// }
+	//
+	// lerpT += GameInstance::Get().GetDeltaTime() / 1000; // Increment the lerpT value
+	//
+	// // Ensure lerpT does not exceed 1.0
+	// lerpT = glm::clamp(lerpT, 0.0f, 1.0f);
+	//
+	// GetParent()->GetTransform()->position.x = lerp(startPosition.x, mx - GetParent()->GetComponent<Sprite>()->GetSize().x / 2, lerpT);
+	// GetParent()->GetTransform()->position.y = lerp(startPosition.y, my - GetParent()->GetComponent<Sprite>()->GetSize().y / 2, lerpT);
+	//
+	// lastMouse.x = mx;
+	// lastMouse.y = my;
+	//
+	// // std::cout << "Mouse X: " << mx << ", Mouse Y: " << my << std::endl;
 }
 
 void Input::FixedUpdate()
@@ -119,5 +119,10 @@ void Input::FixedUpdate()
 		ProcessInput();
 
 	if (lerpToMouse)
-		LerpToMouse();
+		GetMousePosition();
+}
+
+glm::vec2 Input::GetVelocity() const
+{
+	return velocity;
 }

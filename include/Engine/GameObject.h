@@ -37,6 +37,7 @@ public:
 		auto component = std::make_shared<T>(std::forward<TArgs>(args)...);
 		components.emplace_back(component);
 		component->parent = shared_from_this();
+		component->Start();
 		return component;
 	}
 

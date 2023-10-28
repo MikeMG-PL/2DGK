@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Camera.h"
 #include "SDL.h"
 #include "Engine/Component.h"
 #include "glm/glm.hpp"
@@ -22,8 +23,9 @@ public:
 	bool allowInput = false;
 
 	void ProcessInput();
-	void LerpToMouse();
+	glm::vec2 GetMousePosition();
 	void FixedUpdate() override;
+	glm::vec2 GetVelocity() const;
 
 private:
 

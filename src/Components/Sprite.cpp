@@ -26,8 +26,10 @@ void Sprite::Update()
 	std::shared_ptr<GameObject> parentPtr = GetParent();
 	Transform t = *parentPtr->GetTransform();
 
-	rect.x = static_cast<int>(round(t.position.x));
-	rect.y = static_cast<int>(round(t.position.y));
+	rect.x = static_cast<int>(round(t.position.x) + GameInstance::Get().GetRect().x - GetSize().x / 2);
+	rect.y = static_cast<int>(round(t.position.y) + GameInstance::Get().GetRect().y - GetSize().y / 2);
+	// rect.x = static_cast<int>(round(t.position.x));
+	// rect.y = static_cast<int>(round(t.position.y));
 	rect.w = w;
 	rect.h = h;
 
@@ -36,7 +38,12 @@ void Sprite::Update()
 
 glm::vec2 Sprite::GetSize() const
 {
-	return {w, h};
+	return { w, h };
+}
+
+SDL_Rect Sprite::GetRect() const
+{
+	return rect;
 }
 
 bool Sprite::loadMedia(const std::string& path)

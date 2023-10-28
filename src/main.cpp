@@ -10,13 +10,9 @@
 */
 //Using SDL, SDL_image, standard IO, and strings
 #include <SDL.h>
-#include <SDL_image.h>
-#include <iostream>
-#include <cmath>
-#include <string>
 #include <glm/glm.hpp>
-#include "ImageLoader.h"
 #include "InputEnums.h"
+#include "Components/Camera.h"
 #include "Components/Input.h"
 #include "Components/Sprite.h"
 #include "Engine/GameInstance.h"
@@ -53,12 +49,7 @@ int main(int argc, char* args[])
 		player1->AddComponent<Input>(0.97f, 1000, false, true);		// smooth, speed, lerpToMouse, allowInput
 		player1->GetTransform()->position.x = 25;
 		player1->GetTransform()->position.y = 25;
-
-		auto player2 = GameObject::CreateObject();
-		player2->AddComponent<Sprite>("cr.png", 200, 200);			// smooth, speed, lerpToMouse, allowInput
-		player2->AddComponent<Input>(0.0f, 0, true, false);
-		player2->GetTransform()->position.x = 300;
-		player2->GetTransform()->position.y = 200;
+		player1->AddComponent<Camera>(glm::vec2(0, 0));
 
 		// While application is running
 		while (!quit)

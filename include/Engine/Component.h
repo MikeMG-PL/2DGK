@@ -7,8 +7,8 @@ class Component
 {
 public:
 
-	void SetParent(std::shared_ptr<GameObject> obj);
 	const std::shared_ptr<GameObject>& GetParent() const;
+	virtual void Start() {}
 	virtual void Update() {}
 	virtual void FixedUpdate() {}
 	virtual ~Component() = default;

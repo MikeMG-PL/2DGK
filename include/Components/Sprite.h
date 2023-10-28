@@ -16,10 +16,11 @@ public:
 	~Sprite() override;
 	void Update() override;
 	glm::vec2 GetSize() const;
+	SDL_Rect GetRect() const;
 
 private:
 	SDL_Texture* texture;
-	SDL_Rect rect = {0, 0, 0, 0};
+	SDL_Rect rect = { 0, 0, 0, 0 };
 	bool loadMedia(const std::string& path);
 
 	int w, h;

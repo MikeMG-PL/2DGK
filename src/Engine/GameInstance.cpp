@@ -1,6 +1,9 @@
 #include "Engine/GameInstance.h"
 #include <iostream>
 #include <SDL_image.h>
+
+#include "Components/Camera.h"
+#include "Components/Sprite.h"
 #include "Engine/Component.h"
 #include "Engine/GameObject.h"
 
@@ -72,6 +75,8 @@ GameInstance& GameInstance::Get()
 bool GameInstance::StartGame(int windowX, int windowY)
 {
 	std::cout << "Manually created GameInstance object." << std::endl;
+	this->windowX = windowX;
+	this->windowY = windowY;
 	return init(windowX, windowY);
 }
 
@@ -82,9 +87,25 @@ void GameInstance::RegisterObject(std::shared_ptr<GameObject> const& obj)
 
 void GameInstance::UpdateGame()
 {
+
 	for (const auto& gameObjectPtr : allGameObjects)
 	{
 		auto allComponents = gameObjectPtr->GetComponents();
+
+		auto cameraPtr = gameObjectPtr->GetComponent<Camera>();
+		if (cameraPtr != nullptr)
+		{
+			Camera camera = *cameraPtr;
+			SDL_Rect r = gameObjectPtr->GetComponent<Sprite>()->GetRect();
+
+			cameraPosX = gameObjectPtr->GetTransform()->position.x + camera.relativePosition.x;
+			cameraPosY = gameObjectPtr->GetTransform()->position.y + camera.relativePosition.y;
+
+			mainRect = SDL_Rect({ (windowX / 2 - cameraPosX), (windowY / 2 - cameraPosY), windowX, windowY });
+		}
+		else
+			mainRect = SDL_Rect({ -cameraPosX, -cameraPosY, windowX, windowY });
+
 		for (const auto& componentPtr : allComponents)
 		{
 			componentPtr.get()->Update();
@@ -129,6 +150,11 @@ float GameInstance::GetDeltaTime() const
 SDL_Renderer* GameInstance::GetRenderer() const
 {
 	return renderer;
+}
+
+SDL_Rect GameInstance::GetRect() const
+{
+	return mainRect;
 }
 
 void GameInstance::close()

@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include <SDL.h>
+#include <glm/vec2.hpp>
 class GameObject;
 
 class GameInstance
@@ -23,13 +24,16 @@ public:
 	float GetDeltaTime() const;
 
 	SDL_Renderer* GetRenderer() const;
+	SDL_Rect GetRect() const;
 	std::vector<std::shared_ptr<GameObject>> allGameObjects;
 
 private:
 
+	int windowX = 0, windowY = 0;
+	int cameraPosX = 0, cameraPosY = 0;
 	SDL_Renderer* renderer;
+	SDL_Rect mainRect;
 	SDL_Window* window;
-
 	Uint64 NOW = SDL_GetPerformanceCounter();
 	Uint64 LAST = 0;
 	float deltaTime = 0;
