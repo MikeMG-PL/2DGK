@@ -16,7 +16,7 @@ class Camera : public Component
 {
 
 public:
-	Camera(const glm::vec2& relative_position, CameraMode camera_mode);
+	Camera(const glm::vec2& relative_position, CameraMode camera_mode, std::shared_ptr<GameObject> player1 = GameObject::CreateObject(), std::shared_ptr<GameObject> player2 = GameObject::CreateObject());
 
 	void Start() override;
 	void Update() override;
@@ -30,4 +30,5 @@ private:
 	CameraMode mode;
 	std::shared_ptr<Input> input;
 	glm::vec2 characterVelocity;
+	std::shared_ptr<GameObject> player1, player2;
 };

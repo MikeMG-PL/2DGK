@@ -101,7 +101,7 @@ void GameInstance::UpdateGame()
 			cameraPosX = gameObjectPtr->GetTransform()->position.x + camera.relativePosition.x;
 			cameraPosY = gameObjectPtr->GetTransform()->position.y + camera.relativePosition.y;
 
-			mainRect = SDL_Rect({ (windowX / 2 - cameraPosX), (windowY / 2 - cameraPosY), windowX, windowY });
+			mainRect = SDL_Rect({ (windowX / 2 - cameraPosX), (windowY / 2 - cameraPosY), windowX, windowY });	
 		}
 		else
 			mainRect = SDL_Rect({ -cameraPosX, -cameraPosY, windowX, windowY });

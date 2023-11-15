@@ -22,7 +22,6 @@ private:
 	SDL_Texture* texture;
 	SDL_Rect rect = { 0, 0, 0, 0 };
 	bool loadMedia(const std::string& path);
-
 	int w, h;
 };
 
