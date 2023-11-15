@@ -45,11 +45,17 @@ int main(int argc, char* args[])
 		LevelLoader::Get().LoadLevel("level.txt");
 
 		auto player1 = GameObject::CreateObject();
-		player1->AddComponent<Sprite>("sq.png", 100, 100);
-		player1->AddComponent<Input>(0.97f, 1000, false, true);		// smooth, speed, lerpToMouse, allowInput
+		player1->AddComponent<Sprite>("pig.png", 100, 100);
+		player1->AddComponent<Input>(0.97f, 1000, false, true, Player1);		// smooth, speed, lerpToMouse, allowInput, whichPlayer
 		player1->GetTransform()->position.x = 25;
 		player1->GetTransform()->position.y = 25;
-		player1->AddComponent<Camera>(glm::vec2(0, 0));
+		player1->AddComponent<Camera>(glm::vec2(0, 0), OnePlayer);
+
+		auto player2 = GameObject::CreateObject();
+		player2->AddComponent<Sprite>("cow.png", 100, 100);
+		player2->AddComponent<Input>(0.97f, 1000, false, true, Player2);		// smooth, speed, lerpToMouse, allowInput, whichPlayer
+		player2->GetTransform()->position.x = 200;
+		player2->GetTransform()->position.y = 25;
 
 		// While application is running
 		while (!quit)

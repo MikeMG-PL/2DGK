@@ -5,15 +5,22 @@
 #include "Engine/Component.h"
 #include "glm/glm.hpp"
 
+enum WhichPlayer
+{
+	Player1,
+	Player2
+};
+
 class Input : public Component
 {
 
 public:
-	Input(float smooth, float speed, bool lerp_to_mouse, bool allow_input)
+	Input(float smooth, float speed, bool lerp_to_mouse, bool allow_input, WhichPlayer which_player)
 		: smooth(smooth),
 		  speed(speed),
 		  lerpToMouse(lerp_to_mouse),
-		  allowInput(allow_input)
+		  allowInput(allow_input),
+	      whichPlayer(which_player)
 	{
 	}
 
@@ -29,6 +36,7 @@ public:
 
 private:
 
+	WhichPlayer whichPlayer;
 	const Uint8* state = 0;
 	glm::vec2 inputDirection = {};
 	glm::vec2 velocity = {};
