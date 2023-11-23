@@ -22,6 +22,9 @@ public:
 	void UpdateScreen();
 	void Count();
 	float GetDeltaTime() const;
+	void SetZoomScale(float value);
+	float GetZoomScale() const;
+	float GetBaseScale() const;
 
 	SDL_Renderer* GetRenderer() const;
 	SDL_Rect GetRect() const;
@@ -29,6 +32,8 @@ public:
 
 private:
 
+	float zoomScale = 1.0f;
+	float baseScale = 1.0f;
 	int windowX = 0, windowY = 0;
 	int cameraPosX = 0, cameraPosY = 0;
 	SDL_Renderer* renderer;

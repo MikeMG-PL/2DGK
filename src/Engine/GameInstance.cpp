@@ -106,6 +106,9 @@ void GameInstance::UpdateGame()
 		else
 			mainRect = SDL_Rect({ -cameraPosX, -cameraPosY, windowX, windowY });
 
+		mainRect.w /= zoomScale;
+		mainRect.h /= zoomScale;
+
 		for (const auto& componentPtr : allComponents)
 		{
 			componentPtr.get()->Update();
@@ -131,7 +134,8 @@ void GameInstance::ClearScreen()
 
 void GameInstance::UpdateScreen()
 {
-	SDL_RenderPresent(renderer);
+	SDL_RenderSetScale(renderer, zoomScale, zoomScale);
+	SDL_RenderPresent(renderer); 
 }
 
 void GameInstance::Count()
@@ -147,6 +151,11 @@ float GameInstance::GetDeltaTime() const
 	return deltaTime;
 }
 
+void GameInstance::SetZoomScale(float value)
+{
+	zoomScale = value;
+}
+
 SDL_Renderer* GameInstance::GetRenderer() const
 {
 	return renderer;
@@ -155,6 +164,16 @@ SDL_Renderer* GameInstance::GetRenderer() const
 SDL_Rect GameInstance::GetRect() const
 {
 	return mainRect;
+}
+
+float GameInstance::GetZoomScale() const
+{
+	return zoomScale;
+}
+
+float GameInstance::GetBaseScale() const
+{
+	return baseScale;
 }
 
 void GameInstance::close()

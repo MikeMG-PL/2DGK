@@ -30,6 +30,25 @@ void Camera::twoPlayers()
 {
 	relativePosition.x = (player1->GetTransform()->position.x + player2->GetTransform()->position.x) / 2 - GameInstance::Get().GetRect().w / 2;
 	relativePosition.y = (player1->GetTransform()->position.y + player2->GetTransform()->position.y) / 2 - GameInstance::Get().GetRect().h / 2;
+
+	float distance = glm::distance(player1->GetTransform()->position, player2->GetTransform()->position);
+	float height = GameInstance::Get().GetRect().h - 100;
+	float offset = 20.0f;
+
+	if (distance > height && GameInstance::Get().GetZoomScale() > 0.5f)
+	{
+		if (!(distance > height - offset && distance < height + offset))
+		{
+			GameInstance::Get().SetZoomScale(GameInstance::Get().GetZoomScale() - 0.001f * GameInstance::Get().GetBaseScale());
+		}
+	}
+	else if (GameInstance::Get().GetZoomScale() <= 1.0f)
+	{
+		if (!(distance > height - offset && distance < height + offset))
+		{
+			GameInstance::Get().SetZoomScale(GameInstance::Get().GetZoomScale() + 0.001f * GameInstance::Get().GetBaseScale());
+		}
+	}
 }
 
 void Camera::Update()

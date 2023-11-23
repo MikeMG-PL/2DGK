@@ -1,14 +1,7 @@
 // Based on LazyFoo's tutorials
 /*
- * Ideally, functions such as init, loadMedia, close, etc... should be cut out to separate files just like ImageLoader
- * This will be done next.
- *
- * MORE ON REFACTORING:
- * - apply Update design pattern
  * - apply FixedDeltaTime so smoothing is framerate-independent
- * - create abstraction layer based on components
 */
-//Using SDL, SDL_image, standard IO, and strings
 #include <SDL.h>
 #include <glm/glm.hpp>
 #include "InputEnums.h"
