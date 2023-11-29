@@ -22,8 +22,16 @@ void Camera::Start()
 void Camera::onePlayer()
 {
 	characterVelocity = input->GetVelocity() * 15.0f;
-	relativePosition.x = characterVelocity.x + input->GetMousePosition().x - GameInstance::Get().GetRect().w / 2;
-	relativePosition.y = characterVelocity.y + input->GetMousePosition().y - GameInstance::Get().GetRect().h / 2;
+	if(moveCameraWithMouse)
+	{
+		relativePosition.x = characterVelocity.x + input->GetMousePosition().x - GameInstance::Get().GetRect().w / 2;
+		relativePosition.y = characterVelocity.y + input->GetMousePosition().y - GameInstance::Get().GetRect().h / 2;
+	}
+	else
+	{
+		relativePosition.x = characterVelocity.x;
+		relativePosition.y = characterVelocity.y;
+	}
 }
 
 void Camera::twoPlayers()

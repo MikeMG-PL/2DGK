@@ -25,6 +25,7 @@ public:
 	void SetZoomScale(float value);
 	float GetZoomScale() const;
 	float GetBaseScale() const;
+	glm::vec2 GetWindowSize() const;
 
 	SDL_Renderer* GetRenderer() const;
 	SDL_Rect GetRect() const;

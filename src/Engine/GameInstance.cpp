@@ -176,6 +176,11 @@ float GameInstance::GetBaseScale() const
 	return baseScale;
 }
 
+glm::vec2 GameInstance::GetWindowSize() const
+{
+	return { windowX, windowY };
+}
+
 void GameInstance::close()
 {
 	// Destroy window	

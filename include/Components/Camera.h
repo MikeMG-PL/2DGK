@@ -21,6 +21,7 @@ public:
 	void Start() override;
 	void Update() override;
 	glm::vec2 relativePosition;
+	bool moveCameraWithMouse = true;
 
 private:
 

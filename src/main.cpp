@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <glm/glm.hpp>
 #include "InputEnums.h"
+#include "Components/BallMovement.h"
 #include "Components/Camera.h"
 #include "Components/Input.h"
 #include "Components/Sprite.h"
@@ -35,22 +36,25 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		LevelLoader::Get().LoadLevel("level.txt");
-
-		auto player1 = GameObject::CreateObject();
-		player1->AddComponent<Sprite>("pig.png", 100, 100);
-		player1->AddComponent<Input>(0.97f, 1000, false, true, Player1);		// smooth, speed, lerpToMouse, allowInput, whichPlayer
-		player1->GetTransform()->position.x = 25;
-		player1->GetTransform()->position.y = 25;
-
-		auto player2 = GameObject::CreateObject();
-		player2->AddComponent<Sprite>("cow.png", 100, 100);
-		player2->AddComponent<Input>(0.97f, 1000, false, true, Player2);		// smooth, speed, lerpToMouse, allowInput, whichPlayer
-		player2->GetTransform()->position.x = 200;
-		player2->GetTransform()->position.y = 25;
+		LevelLoader::Get().LoadLevel("empty.txt");
 
 		auto camera = GameObject::CreateObject();
-		camera->AddComponent<Camera>(glm::vec2(0, 0), TwoPlayers, player1, player2);
+		camera->AddComponent<Sprite>("camerasprite.png", 100, 100);
+		camera->AddComponent<Input>(0.97f, 1000, false, false, Player1);		// smooth, speed, lerpToMouse, allowInput, whichPlayer
+		camera->AddComponent<Camera>(glm::vec2(0, 0), OnePlayer);
+		camera->GetComponent<Camera>()->moveCameraWithMouse = false;
+
+		auto ball1 = GameObject::CreateObject();
+		ball1->AddComponent<Sprite>("ball.png", 100, 100);
+		ball1->AddComponent<BallMovement>();
+		ball1->GetTransform()->position = glm::vec2(SCREEN_WIDTH / 2 - 500, SCREEN_HEIGHT / 2);
+		ball1->GetComponent<BallMovement>()->direction = BallMovement::TestingDirection(0);
+
+		auto ball2 = GameObject::CreateObject();
+		ball2->AddComponent<Sprite>("ball.png", 100, 100);
+		ball2->AddComponent<BallMovement>();
+		ball2->GetTransform()->position = glm::vec2(SCREEN_WIDTH / 2 + 500, SCREEN_HEIGHT / 2);
+		ball2->GetComponent<BallMovement>()->direction = BallMovement::TestingDirection(1);
 
 		// While application is running
 		while (!quit)
