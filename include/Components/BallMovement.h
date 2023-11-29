@@ -16,10 +16,17 @@ public:
 	static glm::vec2 RandomDirection();
 	static glm::vec2 TestingDirection(int ballNum);
 
+	glm::vec2 center = {};
+	float radius = 0;
+
 private:
 
-	glm::vec2 nextPosition = glm::vec2(0);
+	glm::vec2 position = {};
+	glm::vec2 spriteSize = {};
+	glm::vec2 screenSize = {};
+	glm::vec2 nextPosition = {};
 	float timeX = 0;
 	float timeY = 0;
 	void borderCollision();
+	void separate();
 };

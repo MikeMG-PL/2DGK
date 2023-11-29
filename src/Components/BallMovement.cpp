@@ -8,6 +8,8 @@
 void BallMovement::Start()
 {
 	Component::Start();
+	spriteSize = GetParent()->GetComponent<Sprite>()->GetSize();
+	screenSize = GameInstance::Get().GetWindowSize();
 	direction = RandomDirection();
 }
 
@@ -15,6 +17,11 @@ void BallMovement::Update()
 {
 	Component::Update();
 	borderCollision();
+
+	position = GetParent()->GetTransform()->position;
+	radius = spriteSize.x / 2;
+	center = {position.x + spriteSize.x/2 , position.y + spriteSize.y/2};
+
 	nextPosition = direction * speed * GameInstance::Get().GetDeltaTime();
 	GetParent()->GetTransform()->position += nextPosition;
 }
@@ -45,10 +52,6 @@ glm::vec2 BallMovement::TestingDirection(int ballNum)
 
 void BallMovement::borderCollision()
 {
-	const glm::vec2 position = GetParent()->GetTransform()->position;
-	const glm::vec2 spriteSize = GetParent()->GetComponent<Sprite>()->GetSize();
-	const glm::vec2 screenSize = GameInstance::Get().GetWindowSize();
-
 	timeX += GameInstance::Get().GetDeltaTime();
 	timeY += GameInstance::Get().GetDeltaTime();
 
@@ -60,3 +63,7 @@ void BallMovement::borderCollision()
 		direction.y = -direction.y;
 }
 
+void BallMovement::separate()
+{
+
+}
