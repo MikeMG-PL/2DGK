@@ -16,7 +16,6 @@ void BallMovement::Start()
 void BallMovement::Update()
 {
 	Component::Update();
-	borderCollision();
 
 	position = GetParent()->GetTransform()->position;
 	radius = spriteSize.x / 2;
@@ -24,6 +23,8 @@ void BallMovement::Update()
 
 	nextPosition = direction * speed * GameInstance::Get().GetDeltaTime();
 	GetParent()->GetTransform()->position += nextPosition;
+
+	borderCollision();
 }
 
 glm::vec2 BallMovement::RandomDirection()
@@ -55,15 +56,37 @@ void BallMovement::borderCollision()
 	timeX += GameInstance::Get().GetDeltaTime();
 	timeY += GameInstance::Get().GetDeltaTime();
 
-
-	if (position.x + nextPosition.x - spriteSize.x/2 < 0 || position.x + nextPosition.x + spriteSize.x / 2 > screenSize.x)
+	if (position.x - radius < 0 && direction.x < 0)
+	{
+		// Left border collision
 		direction.x = -direction.x;
+	}
+	else if (position.x + radius > screenSize.x && direction.x > 0)
+	{
+		// Right border collision
+		direction.x = -direction.x;
+	}
 
-	if (position.y + nextPosition.y - spriteSize.y / 2 < 0 || position.y + nextPosition.y + spriteSize.y / 2 > screenSize.y)
+	if (position.y - radius < 0 && direction.y < 0)
+	{
+		// Top border collision
 		direction.y = -direction.y;
+	}
+	else if (position.y + radius > screenSize.y && direction.y > 0)
+	{
+		// Bottom border collision
+		direction.y = -direction.y;
+	}
 }
 
-void BallMovement::separate()
-{
+// BallMovement::~BallMovement()
+// {
+// 	GameInstance::Get().UnregisterCollidingBall(*this);
+// }
 
+
+void BallMovement::Separate(glm::vec2 c1, glm::vec2 c2, float r1, float r2)
+{
+	const glm::vec2 separationVector = glm::normalize(c1 - c2) * (r1 + r2 - glm::distance(c1, c2));
+	GetParent()->GetTransform()->position += separationVector / 2.0f;
 }

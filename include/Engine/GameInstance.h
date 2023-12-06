@@ -3,6 +3,8 @@
 #include <vector>
 #include <SDL.h>
 #include <glm/vec2.hpp>
+
+#include "Components/BallMovement.h"
 class GameObject;
 
 class GameInstance
@@ -26,10 +28,13 @@ public:
 	float GetZoomScale() const;
 	float GetBaseScale() const;
 	glm::vec2 GetWindowSize() const;
+	std::vector<std::shared_ptr<BallMovement>> GetCollidingBalls() const;
 
 	SDL_Renderer* GetRenderer() const;
 	SDL_Rect GetRect() const;
 	std::vector<std::shared_ptr<GameObject>> allGameObjects;
+	std::vector<std::shared_ptr<Component>> allComponents;
+	std::vector<std::shared_ptr<BallMovement>> allColliders;
 
 private:
 

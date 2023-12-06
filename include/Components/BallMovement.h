@@ -19,6 +19,9 @@ public:
 	glm::vec2 center = {};
 	float radius = 0;
 
+	int GetID() const;
+	void Separate(glm::vec2 c1, glm::vec2 c2, float r1, float r2);
+
 private:
 
 	glm::vec2 position = {};
@@ -28,5 +31,5 @@ private:
 	float timeX = 0;
 	float timeY = 0;
 	void borderCollision();
-	void separate();
+	// ~BallMovement() override;
 };

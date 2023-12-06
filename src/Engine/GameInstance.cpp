@@ -2,6 +2,7 @@
 #include <iostream>
 #include <SDL_image.h>
 
+#include "Components/BallMovement.h"
 #include "Components/Camera.h"
 #include "Components/Sprite.h"
 #include "Engine/Component.h"
@@ -87,11 +88,12 @@ void GameInstance::RegisterObject(std::shared_ptr<GameObject> const& obj)
 
 void GameInstance::UpdateGame()
 {
-
+	allColliders.clear();
 	for (const auto& gameObjectPtr : allGameObjects)
 	{
-		auto allComponents = gameObjectPtr->GetComponents();
+		allComponents = gameObjectPtr->GetComponents();
 
+		// Rendering
 		auto cameraPtr = gameObjectPtr->GetComponent<Camera>();
 		if (cameraPtr != nullptr)
 		{
@@ -109,9 +111,33 @@ void GameInstance::UpdateGame()
 		mainRect.w /= zoomScale;
 		mainRect.h /= zoomScale;
 
+		auto col = gameObjectPtr->GetComponent<BallMovement>();
+		if (col != nullptr)
+			allColliders.emplace_back(col);
+
+		// Component update
 		for (const auto& componentPtr : allComponents)
 		{
 			componentPtr.get()->Update();
+		}
+	}
+
+	// Collision detection
+	for (int i = 0; i < allColliders.size(); i++)
+	{
+		for (int j = 0; j < allColliders.size(); j++)
+		{
+			if (i != j)
+			{
+				const float distance = glm::distance(allColliders[i]->center, allColliders[j]->center);
+				const float radiusSum = allColliders[i]->radius + allColliders[j]->radius;
+
+				if (distance < radiusSum)
+				{
+					allColliders[i]->Separate(allColliders[i]->center, allColliders[j]->center, allColliders[i]->radius, allColliders[j]->radius);
+					allColliders[j]->Separate(allColliders[j]->center, allColliders[i]->center, allColliders[j]->radius, allColliders[i]->radius);
+				}
+			}
 		}
 	}
 }
