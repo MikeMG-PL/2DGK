@@ -15,6 +15,8 @@ public:
 	GameInstance(const GameInstance&) = delete;
 	~GameInstance();
 
+	bool separate = false;
+	bool reflect = false;
 	static GameInstance& Get();
 	bool StartGame(int windowX, int windowY);
 	void RegisterObject(std::shared_ptr<GameObject> const& obj);
@@ -48,6 +50,10 @@ private:
 	Uint64 NOW = SDL_GetPerformanceCounter();
 	Uint64 LAST = 0;
 	float deltaTime = 0;
+
+	const Uint8* state = 0;
+	bool pressed1;
+	bool pressed2;
 
 	bool init(int X, int Y);
 	void close();

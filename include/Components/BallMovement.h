@@ -19,11 +19,12 @@ public:
 	glm::vec2 center = {};
 	float radius = 0;
 
-	int GetID() const;
 	void Separate(glm::vec2 c1, glm::vec2 c2, float r1, float r2);
+	void Reflect();
 
 private:
 
+	glm::vec2 separationVector = {};
 	glm::vec2 position = {};
 	glm::vec2 spriteSize = {};
 	glm::vec2 screenSize = {};

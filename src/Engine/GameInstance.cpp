@@ -88,6 +88,28 @@ void GameInstance::RegisterObject(std::shared_ptr<GameObject> const& obj)
 
 void GameInstance::UpdateGame()
 {
+	state = SDL_GetKeyboardState(NULL);
+
+	if (state[SDL_SCANCODE_1] && !pressed1)
+	{
+		separate = !separate;
+		std::cout << "Separation: " << separate << std::endl;
+		pressed1 = true;
+	}
+
+	if (state[SDL_SCANCODE_2] && !pressed2)
+	{
+		reflect = !reflect;
+		std::cout << "Reflection: " << reflect << std::endl;
+		pressed2 = true;
+	}
+
+	if (state[SDL_SCANCODE_0])
+	{
+		pressed1 = false;
+		pressed2 = false;
+	}
+
 	allColliders.clear();
 	for (const auto& gameObjectPtr : allGameObjects)
 	{
@@ -103,7 +125,7 @@ void GameInstance::UpdateGame()
 			cameraPosX = gameObjectPtr->GetTransform()->position.x + camera.relativePosition.x;
 			cameraPosY = gameObjectPtr->GetTransform()->position.y + camera.relativePosition.y;
 
-			mainRect = SDL_Rect({ (windowX / 2 - cameraPosX), (windowY / 2 - cameraPosY), windowX, windowY });	
+			mainRect = SDL_Rect({ (windowX / 2 - cameraPosX), (windowY / 2 - cameraPosY), windowX, windowY });
 		}
 		else
 			mainRect = SDL_Rect({ -cameraPosX, -cameraPosY, windowX, windowY });
@@ -134,8 +156,16 @@ void GameInstance::UpdateGame()
 
 				if (distance < radiusSum)
 				{
-					allColliders[i]->Separate(allColliders[i]->center, allColliders[j]->center, allColliders[i]->radius, allColliders[j]->radius);
-					allColliders[j]->Separate(allColliders[j]->center, allColliders[i]->center, allColliders[j]->radius, allColliders[i]->radius);
+					if (separate)
+					{
+						allColliders[i]->Separate(allColliders[i]->center, allColliders[j]->center, allColliders[i]->radius, allColliders[j]->radius);
+						allColliders[j]->Separate(allColliders[j]->center, allColliders[i]->center, allColliders[j]->radius, allColliders[i]->radius);
+					}
+					if(reflect)
+					{
+						allColliders[i]->Reflect();
+						allColliders[j]->Reflect();
+					}
 				}
 			}
 		}
@@ -161,7 +191,7 @@ void GameInstance::ClearScreen()
 void GameInstance::UpdateScreen()
 {
 	SDL_RenderSetScale(renderer, zoomScale, zoomScale);
-	SDL_RenderPresent(renderer); 
+	SDL_RenderPresent(renderer);
 }
 
 void GameInstance::Count()

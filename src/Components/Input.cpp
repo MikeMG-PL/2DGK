@@ -20,6 +20,7 @@ void Input::ProcessInput()
 	auto enumDown = SDL_SCANCODE_UNKNOWN;
 	auto enumLeft = SDL_SCANCODE_UNKNOWN;
 	auto enumRight = SDL_SCANCODE_UNKNOWN;
+		
 
 	switch (whichPlayer)
 	{

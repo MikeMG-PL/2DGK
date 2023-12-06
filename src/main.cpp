@@ -44,17 +44,26 @@ int main(int argc, char* args[])
 		camera->AddComponent<Camera>(glm::vec2(0, 0), OnePlayer);
 		camera->GetComponent<Camera>()->moveCameraWithMouse = false;
 
-		auto ball1 = GameObject::CreateObject();
-		ball1->AddComponent<Sprite>("ball.png", 100, 100);
-		ball1->AddComponent<BallMovement>();
-		ball1->GetTransform()->position = glm::vec2(SCREEN_WIDTH / 2 - 500, SCREEN_HEIGHT / 2);
-		ball1->GetComponent<BallMovement>()->direction = BallMovement::TestingDirection(0);
+		const int ballNum = 10;
+		std::vector<GameObject> balls;
 
-		auto ball2 = GameObject::CreateObject();
-		ball2->AddComponent<Sprite>("ball.png", 100, 100);
-		ball2->AddComponent<BallMovement>();
-		ball2->GetTransform()->position = glm::vec2(SCREEN_WIDTH / 2 + 500, SCREEN_HEIGHT / 2);
-		ball2->GetComponent<BallMovement>()->direction = BallMovement::TestingDirection(1);
+		for(int i = 0; i < ballNum; i++)
+		{
+			auto b = GameObject::CreateObject();
+			b->AddComponent<Sprite>("ball.png", 100, 100);
+			b->AddComponent<BallMovement>();
+			b->GetTransform()->position = glm::vec2(120 * i, 100);
+			// balls.emplace_back(*b);
+		}
+
+		for (int i = 0; i < ballNum; i++)
+		{
+			auto b = GameObject::CreateObject();
+			b->AddComponent<Sprite>("ball.png", 100, 100);
+			b->AddComponent<BallMovement>();
+			b->GetTransform()->position = glm::vec2(120 * i, 400);
+			// balls.emplace_back(*b);
+		}
 
 		// While application is running
 		while (!quit)

@@ -79,14 +79,20 @@ void BallMovement::borderCollision()
 	}
 }
 
-// BallMovement::~BallMovement()
-// {
-// 	GameInstance::Get().UnregisterCollidingBall(*this);
-// }
-
 
 void BallMovement::Separate(glm::vec2 c1, glm::vec2 c2, float r1, float r2)
 {
-	const glm::vec2 separationVector = glm::normalize(c1 - c2) * (r1 + r2 - glm::distance(c1, c2));
+	separationVector = glm::normalize(c1 - c2) * (r1 + r2 - glm::distance(c1, c2));
 	GetParent()->GetTransform()->position += separationVector / 2.0f;
+}
+
+void BallMovement::Reflect()
+{
+	float dt = GameInstance::Get().GetDeltaTime();
+
+	// glm::vec2 newDir = direction - 2 * glm::dot(separationVector, direction) * separationVector;
+	glm::vec2 newDir;
+	// newDir = direction - 2 * glm::dot(separationVector, direction) * separationVector;
+	newDir = glm::normalize(separationVector);
+	direction = newDir;
 }
