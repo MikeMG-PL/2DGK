@@ -1,57 +1,27 @@
-#include "Components/BallMovement.h"
+#include "Components/Collider.h"
 
 #include <random>
 
 #include "Components/Sprite.h"
 #include "Engine/GameObject.h"
 
-void BallMovement::Start()
+void Collider::Start()
 {
 	Component::Start();
 	spriteSize = GetParent()->GetComponent<Sprite>()->GetSize();
 	screenSize = GameInstance::Get().GetWindowSize();
-	direction = RandomDirection();
 }
 
-void BallMovement::Update()
+void Collider::Update()
 {
 	Component::Update();
 
 	position = GetParent()->GetTransform()->position;
 	radius = spriteSize.x / 2;
 	center = {position.x + spriteSize.x/2 , position.y + spriteSize.y/2};
-
-	nextPosition = direction * speed * GameInstance::Get().GetDeltaTime();
-	GetParent()->GetTransform()->position += nextPosition;
-
-	borderCollision();
 }
 
-glm::vec2 BallMovement::RandomDirection()
-{
-	std::random_device rd;
-	std::mt19937 gen1(rd());
-	std::uniform_real_distribution<> dist(-1, 1);
-
-	const float X = dist(gen1);
-	std::mt19937 gen2(rd());
-	const float Y = dist(gen2);
-
-	glm::vec2 dir = { X, Y };
-	dir = glm::normalize(dir);
-
-	return dir;
-}
-
-glm::vec2 BallMovement::TestingDirection(int ballNum)
-{
-	if (ballNum == 0)
-		return { 1, 0.05f };
-
-	return { -1, -0.05f };
-}
-
-void BallMovement::borderCollision()
+void Collider::borderCollision()
 {
 	timeX += GameInstance::Get().GetDeltaTime();
 	timeY += GameInstance::Get().GetDeltaTime();
@@ -80,19 +50,17 @@ void BallMovement::borderCollision()
 }
 
 
-void BallMovement::Separate(glm::vec2 c1, glm::vec2 c2, float r1, float r2)
+void Collider::Separate(glm::vec2 c1, glm::vec2 c2, float r1, float r2)
 {
 	separationVector = glm::normalize(c1 - c2) * (r1 + r2 - glm::distance(c1, c2));
 	GetParent()->GetTransform()->position += separationVector / 2.0f;
 }
 
-void BallMovement::Reflect()
+void Collider::Reflect()
 {
 	float dt = GameInstance::Get().GetDeltaTime();
 
-	// glm::vec2 newDir = direction - 2 * glm::dot(separationVector, direction) * separationVector;
 	glm::vec2 newDir;
-	// newDir = direction - 2 * glm::dot(separationVector, direction) * separationVector;
 	newDir = glm::normalize(separationVector);
 	direction = newDir;
 }

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <SDL_image.h>
 
-#include "Components/BallMovement.h"
+#include "Components/Collider.h"
 #include "Components/Camera.h"
 #include "Components/Sprite.h"
 #include "Engine/Component.h"
@@ -133,7 +133,7 @@ void GameInstance::UpdateGame()
 		mainRect.w /= zoomScale;
 		mainRect.h /= zoomScale;
 
-		auto col = gameObjectPtr->GetComponent<BallMovement>();
+		auto col = gameObjectPtr->GetComponent<Collider>();
 		if (col != nullptr)
 			allColliders.emplace_back(col);
 

@@ -5,7 +5,7 @@
 #include <SDL.h>
 #include <glm/glm.hpp>
 #include "InputEnums.h"
-#include "Components/BallMovement.h"
+#include "Components/Collider.h"
 #include "Components/Camera.h"
 #include "Components/Input.h"
 #include "Components/Sprite.h"
@@ -36,34 +36,25 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		LevelLoader::Get().LoadLevel("empty.txt");
+		LevelLoader::Get().LoadLevel("level.txt");
+
+		auto p1 = GameObject::CreateObject();
+		p1->AddComponent<Sprite>("ball.png", 100, 100);
+		p1->AddComponent<Input>(0.97f, 1000, false, true, Player1);
+		p1->GetTransform()->position = { 0, 0 };
+		p1->AddComponent<Collider>();
+
+		auto p2 = GameObject::CreateObject();
+		p2->AddComponent<Sprite>("ball.png", 100, 100);
+		p2->AddComponent<Input>(0.97f, 1000, false, true, Player2);
+		p2->GetTransform()->position = { 500, 0 };
+		p2->AddComponent<Collider>();
 
 		auto camera = GameObject::CreateObject();
 		camera->AddComponent<Sprite>("camerasprite.png", 100, 100);
 		camera->AddComponent<Input>(0.97f, 1000, false, false, Player1);		// smooth, speed, lerpToMouse, allowInput, whichPlayer
-		camera->AddComponent<Camera>(glm::vec2(0, 0), OnePlayer);
+		camera->AddComponent<Camera>(glm::vec2(0, 0), TwoPlayers, p1, p2);
 		camera->GetComponent<Camera>()->moveCameraWithMouse = false;
-
-		const int ballNum = 10;
-		std::vector<GameObject> balls;
-
-		for(int i = 0; i < ballNum; i++)
-		{
-			auto b = GameObject::CreateObject();
-			b->AddComponent<Sprite>("ball.png", 100, 100);
-			b->AddComponent<BallMovement>();
-			b->GetTransform()->position = glm::vec2(120 * i, 100);
-			// balls.emplace_back(*b);
-		}
-
-		for (int i = 0; i < ballNum; i++)
-		{
-			auto b = GameObject::CreateObject();
-			b->AddComponent<Sprite>("ball.png", 100, 100);
-			b->AddComponent<BallMovement>();
-			b->GetTransform()->position = glm::vec2(120 * i, 400);
-			// balls.emplace_back(*b);
-		}
 
 		// While application is running
 		while (!quit)

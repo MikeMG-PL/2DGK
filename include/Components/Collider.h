@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include "Engine/Component.h"
 
-class BallMovement : public Component
+class Collider : public Component
 {
 
 public:
@@ -12,9 +12,6 @@ public:
 
 	void Start() override;
 	void Update() override;
-
-	static glm::vec2 RandomDirection();
-	static glm::vec2 TestingDirection(int ballNum);
 
 	glm::vec2 center = {};
 	float radius = 0;
@@ -32,5 +29,4 @@ private:
 	float timeX = 0;
 	float timeY = 0;
 	void borderCollision();
-	// ~BallMovement() override;
 };

@@ -43,7 +43,7 @@ void Camera::twoPlayers()
 	float height = GameInstance::Get().GetRect().h - 100;
 	float offset = 20.0f;
 
-	if (distance > height && GameInstance::Get().GetZoomScale() > 0.5f)
+	if (distance > height && GameInstance::Get().GetZoomScale() > 0.1f) // 0.5
 	{
 		if (!(distance > height - offset && distance < height + offset))
 		{
