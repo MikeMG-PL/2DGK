@@ -25,7 +25,6 @@ private:
 	glm::vec2 position = {};
 	glm::vec2 spriteSize = {};
 	glm::vec2 screenSize = {};
-	glm::vec2 nextPosition = {};
 	float timeX = 0;
 	float timeY = 0;
 	void borderCollision();
