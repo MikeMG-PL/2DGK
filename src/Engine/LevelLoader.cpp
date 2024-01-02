@@ -53,6 +53,9 @@ std::vector<std::shared_ptr<GameObject>> LevelLoader::LoadLevel(const std::strin
 					w->GetTransform()->position.y = linesPassed * w->GetComponent<Sprite>()->GetSize().y;
 				}
 				tiles.emplace_back(w);
+
+				w->AddComponent<Collider>(RECTANGLE);
+				w->GetComponent<Collider>()->isWall = true;
 			}
 		}
 		linesPassed++;

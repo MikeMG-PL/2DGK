@@ -88,28 +88,6 @@ void GameInstance::RegisterObject(std::shared_ptr<GameObject> const& obj)
 
 void GameInstance::UpdateGame()
 {
-	state = SDL_GetKeyboardState(NULL);
-
-	if (state[SDL_SCANCODE_1] && !pressed1)
-	{
-		separate = !separate;
-		std::cout << "Separation: " << separate << std::endl;
-		pressed1 = true;
-	}
-
-	if (state[SDL_SCANCODE_2] && !pressed2)
-	{
-		reflect = !reflect;
-		std::cout << "Reflection: " << reflect << std::endl;
-		pressed2 = true;
-	}
-
-	if (state[SDL_SCANCODE_0])
-	{
-		pressed1 = false;
-		pressed2 = false;
-	}
-
 	allColliders.clear();
 	for (const auto& gameObjectPtr : allGameObjects)
 	{
@@ -144,32 +122,7 @@ void GameInstance::UpdateGame()
 		}
 	}
 
-	// Collision detection
-	for (int i = 0; i < allColliders.size(); i++)
-	{
-		for (int j = 0; j < allColliders.size(); j++)
-		{
-			if (i != j)
-			{
-				const float distance = glm::distance(allColliders[i]->center, allColliders[j]->center);
-				const float radiusSum = allColliders[i]->radius + allColliders[j]->radius;
-
-				if (distance < radiusSum)
-				{
-					if (separate)
-					{
-						allColliders[i]->Separate(allColliders[i]->center, allColliders[j]->center, allColliders[i]->radius, allColliders[j]->radius);
-						allColliders[j]->Separate(allColliders[j]->center, allColliders[i]->center, allColliders[j]->radius, allColliders[i]->radius);
-					}
-					if(reflect)
-					{
-						allColliders[i]->Reflect();
-						allColliders[j]->Reflect();
-					}
-				}
-			}
-		}
-	}
+	
 }
 
 void GameInstance::UpdateGameFixed()
@@ -179,6 +132,98 @@ void GameInstance::UpdateGameFixed()
 		for (const auto& componentPtr : gameObjectPtr->GetComponents())
 		{
 			componentPtr.get()->FixedUpdate();
+		}
+	}
+
+	std::shared_ptr<Collider>* obj1;
+	std::shared_ptr<Collider>* obj2;
+	ColliderType col1;
+	ColliderType col2;
+
+	// Collision detection
+	for (int i = 0; i < allColliders.size(); i++)
+	{
+		for (int j = 0; j < allColliders.size(); j++)
+		{
+			if (i != j && !allColliders[i]->isWall)
+			{
+				col1 = allColliders[i]->GetColliderType();
+				col2 = allColliders[j]->GetColliderType();
+				obj1 = &allColliders[i];
+				obj2 = &allColliders[j];
+
+				// CIRCLE/CIRCLE
+				if (col1 == col2 && col1 == CIRCLE)
+				{
+					const glm::vec2 posi = allColliders[i]->GetParent()->GetTransform()->position, posj = allColliders[j]->GetParent()->GetTransform()->position;
+					const float posDistance = glm::distance(posi, posj);
+					const float radiusSum = allColliders[i]->radius + allColliders[j]->radius;
+
+					if (posDistance < radiusSum && separate)
+					{
+						obj1->get()->Separate(posi, posj, obj1->get()->radius, obj2->get()->radius);
+						obj2->get()->Separate(posj, posi, obj2->get()->radius, obj1->get()->radius);
+					}
+				}
+
+				// CIRCLE/RECTANGLE
+				if (col1 != col2)
+				{
+					if (obj1->get()->GetColliderType() == RECTANGLE)
+					{
+						auto buffer = obj1;
+						obj1 = obj2;
+						obj2 = buffer;
+					}
+
+					// obj1 is a CIRCLE
+
+					glm::vec2 c = obj1->get()->center;
+					float rad = obj1->get()->radius;
+
+					const float sizeDiff = obj1->get()->radius - obj2->get()->radius;
+
+					float l = obj2->get()->GetParent()->GetTransform()->position.x + sizeDiff;
+					float r = obj2->get()->GetParent()->GetTransform()->position.x + obj2->get()->spriteSize.x + sizeDiff;
+
+					float t = obj2->get()->GetParent()->GetTransform()->position.y + sizeDiff;
+					float b = obj2->get()->GetParent()->GetTransform()->position.y + obj2->get()->spriteSize.y + sizeDiff;
+
+					glm::vec2 f = { glm::clamp(c.x, l, r), glm::clamp(c.y, t, b) };
+
+					const float cflength = glm::distance(c, f);
+
+					if (cflength < rad)
+					{
+						obj1->get()->Separate(c, rad, f, l, r, t, b, false);
+						if(!obj2->get()->isWall)
+							obj2->get()->Separate(c, rad, f, l, r, t, b, true);
+					}
+				}
+
+				// RECTANGLE/RECTANGLE
+				if (col1 == col2 && col1 == RECTANGLE)
+				{
+					const float sizeDiff = obj1->get()->radius - obj2->get()->radius;
+
+					float l1 = obj1->get()->GetParent()->GetTransform()->position.x;
+					float r1 = obj1->get()->GetParent()->GetTransform()->position.x + obj1->get()->spriteSize.x;
+
+					float t1 = obj1->get()->GetParent()->GetTransform()->position.y;
+					float b1 = obj1->get()->GetParent()->GetTransform()->position.y + obj1->get()->spriteSize.y;
+
+					float l2 = obj2->get()->GetParent()->GetTransform()->position.x + sizeDiff;
+					float r2 = obj2->get()->GetParent()->GetTransform()->position.x + obj2->get()->spriteSize.x + sizeDiff;
+
+					float t2 = obj2->get()->GetParent()->GetTransform()->position.y + sizeDiff;
+					float b2 = obj2->get()->GetParent()->GetTransform()->position.y + obj2->get()->spriteSize.y + sizeDiff;
+
+					if(r1 - l2 > 0 && r2 - l1 > 0 && b1 - t2 > 0 && b2 - t1 > 0)
+					{
+						obj1->get()->Separate(l1, l2, r1, r2, t1, t2, b1, b2, false);
+					}
+				}
+			}
 		}
 	}
 }

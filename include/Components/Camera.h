@@ -19,7 +19,7 @@ public:
 	Camera(const glm::vec2& relative_position, CameraMode camera_mode, std::shared_ptr<GameObject> player1 = GameObject::CreateObject(), std::shared_ptr<GameObject> player2 = GameObject::CreateObject());
 
 	void Start() override;
-	void Update() override;
+	void FixedUpdate() override;
 	glm::vec2 relativePosition;
 	bool moveCameraWithMouse = true;
 

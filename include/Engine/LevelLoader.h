@@ -19,8 +19,8 @@ public:
 
 private:
 
-	Sprite bricks = Sprite("bricks.png", 150, 150);
-	Sprite wood = Sprite("wood.png", 150, 150);
+	Sprite bricks = Sprite("bricks.png", 50, 50);
+	Sprite wood = Sprite("wood.png", 50, 50);
 	LevelLoader() = default;
 };
 

@@ -69,7 +69,7 @@ void Input::ProcessInput()
 	}
 
 	if (smoothMovement)
-		velocity = inputDirection * GameInstance::Get().GetDeltaTime() * (1.0f - smooth) + velocity * smooth;
+		velocity = inputDirection * speed * 0.001f * GameInstance::Get().GetDeltaTime() * (1.0f - smooth) + velocity * smooth;
 	else
 		velocity = inputDirection * speed * GameInstance::Get().GetDeltaTime() * 0.001f;
 
@@ -101,9 +101,9 @@ glm::vec2 Input::GetMousePosition()
 	return { mx, my };
 }
 
-void Input::FixedUpdate()
+void Input::Update()
 {
-	Component::FixedUpdate();
+	Component::Update();
 
 	if (allowInput)
 		ProcessInput();

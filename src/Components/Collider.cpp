@@ -18,49 +18,71 @@ void Collider::Update()
 
 	position = GetParent()->GetTransform()->position;
 	radius = spriteSize.x / 2;
-	center = {position.x + spriteSize.x/2 , position.y + spriteSize.y/2};
+	center = { position.x + spriteSize.x / 2 , position.y + spriteSize.y / 2 };
 }
-
-void Collider::borderCollision()
-{
-	timeX += GameInstance::Get().GetDeltaTime();
-	timeY += GameInstance::Get().GetDeltaTime();
-
-	if (position.x - radius < 0 && direction.x < 0)
-	{
-		// Left border collision
-		direction.x = -direction.x;
-	}
-	else if (position.x + radius > screenSize.x && direction.x > 0)
-	{
-		// Right border collision
-		direction.x = -direction.x;
-	}
-
-	if (position.y - radius < 0 && direction.y < 0)
-	{
-		// Top border collision
-		direction.y = -direction.y;
-	}
-	else if (position.y + radius > screenSize.y && direction.y > 0)
-	{
-		// Bottom border collision
-		direction.y = -direction.y;
-	}
-}
-
 
 void Collider::Separate(glm::vec2 c1, glm::vec2 c2, float r1, float r2)
 {
-	separationVector = glm::normalize(c1 - c2) * (r1 + r2 - glm::distance(c1, c2));
-	GetParent()->GetTransform()->position += separationVector / 2.0f;
+	// This is for circle x circle
+	v = glm::normalize(c1 - c2) * (r1 + r2 - glm::distance(c1, c2));
+	GetParent()->GetTransform()->position += v / 2.0f;
 }
 
-void Collider::Reflect()
+void Collider::Separate(glm::vec2 c, float rad, glm::vec2 f, float l, float r, float t, float b, bool negate)
 {
-	float dt = GameInstance::Get().GetDeltaTime();
+	// This is for rectangle x circle
 
-	glm::vec2 newDir;
-	newDir = glm::normalize(separationVector);
-	direction = newDir;
+	float separationDirection = 1;
+	if (negate)
+		separationDirection = -1;
+
+	// v is separation vector
+
+	if (c == f)
+	{
+		float left = c.x - l + rad;
+		float right = r - c.x + rad;
+		float top = c.y - t + rad;
+		float bottom = b - c.y + rad;
+
+		left < right ? v.x = -left : v.x = right;
+		top < bottom ? v.y = -top : v.y = bottom;
+
+		if(abs(v.x) < abs(v.y))
+			v.y = 0;
+
+		if (abs(v.x) > abs(v.y))
+			v.x = 0;
+	}
+	else
+	{
+		v = normalize(c - f) * (rad - glm::length(c-f));
+	}
+
+	GetParent()->GetTransform()->position += v * separationDirection / 2.0f;
+}
+
+void Collider::Separate(float l1, float l2, float r1, float r2, float t1, float t2, float b1, float b2, bool negate)
+{
+	const float left = r1 - l2, right = r2 - l1, top = b1 - t2, bottom = b2 - t1;
+
+	float separationDirection = 1;
+	if (negate)
+		separationDirection = -1;
+
+	left < right ? v.x = -left : v.x = right;
+	top < bottom ? v.y = -top : v.y = bottom;
+
+	if (abs(v.x) < abs(v.y))
+		v.y = 0;
+	else
+		v.x = 0;
+
+	GetParent()->GetTransform()->position += v * separationDirection / 2.0f;
+}
+
+
+ColliderType Collider::GetColliderType() const
+{
+	return colliderType;
 }

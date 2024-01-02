@@ -25,13 +25,13 @@ public:
 	}
 
 	float smooth = 0.97f;
-	float speed = 1000.0f;
+	float speed = 100;
 	bool lerpToMouse = false;
 	bool allowInput = false;
 
 	void ProcessInput();
 	glm::vec2 GetMousePosition();
-	void FixedUpdate() override;
+	void Update() override;
 	glm::vec2 GetVelocity() const;
 
 private:
