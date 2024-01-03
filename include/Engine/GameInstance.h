@@ -27,13 +27,17 @@ public:
 	void Count();
 	float GetDeltaTime() const;
 	void SetZoomScale(float value);
+	void Pause(float seconds);
 	float GetZoomScale() const;
 	float GetBaseScale() const;
 	glm::vec2 GetWindowSize() const;
 	std::vector<std::shared_ptr<Collider>> GetCollidingBalls() const;
-
+	int cameraPosX = 0, cameraPosY = 0;
 	SDL_Renderer* GetRenderer() const;
 	SDL_Rect GetRect() const;
+	int currentLevelNumber = 1;
+	int p1points = 0;
+	int p2points = 0;
 	std::vector<std::shared_ptr<GameObject>> allGameObjects;
 	std::vector<std::shared_ptr<Component>> allComponents;
 	std::vector<std::shared_ptr<Collider>> allColliders;
@@ -43,7 +47,7 @@ private:
 	float zoomScale = 1.0f;
 	float baseScale = 1.0f;
 	int windowX = 0, windowY = 0;
-	int cameraPosX = 0, cameraPosY = 0;
+	
 	SDL_Renderer* renderer;
 	SDL_Rect mainRect;
 	SDL_Window* window;

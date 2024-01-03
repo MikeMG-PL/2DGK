@@ -29,6 +29,7 @@ public:
 	bool lerpToMouse = false;
 	bool allowInput = false;
 
+	WhichPlayer GetWhichPlayer() const;
 	void ProcessInput();
 	glm::vec2 GetMousePosition();
 	void Update() override;

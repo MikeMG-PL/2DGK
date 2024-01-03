@@ -16,6 +16,7 @@ public:
 	static LevelLoader& Get();
 
 	std::vector<std::shared_ptr<GameObject>> LoadLevel(const std::string& filepath);
+	void Level(int num);
 
 private:
 

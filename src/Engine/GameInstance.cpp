@@ -78,6 +78,10 @@ bool GameInstance::StartGame(int windowX, int windowY)
 	std::cout << "Manually created GameInstance object." << std::endl;
 	this->windowX = windowX;
 	this->windowY = windowY;
+
+	allGameObjects.reserve(4096);
+	allComponents.reserve(4096);
+
 	return init(windowX, windowY);
 }
 
@@ -91,6 +95,7 @@ void GameInstance::UpdateGame()
 	allColliders.clear();
 	for (const auto& gameObjectPtr : allGameObjects)
 	{
+
 		allComponents = gameObjectPtr->GetComponents();
 
 		// Rendering
@@ -122,7 +127,7 @@ void GameInstance::UpdateGame()
 		}
 	}
 
-	
+
 }
 
 void GameInstance::UpdateGameFixed()
@@ -196,7 +201,7 @@ void GameInstance::UpdateGameFixed()
 					if (cflength < rad)
 					{
 						obj1->get()->Separate(c, rad, f, l, r, t, b, false);
-						if(!obj2->get()->isWall)
+						if (!obj2->get()->isWall)
 							obj2->get()->Separate(c, rad, f, l, r, t, b, true);
 					}
 				}
@@ -218,7 +223,7 @@ void GameInstance::UpdateGameFixed()
 					float t2 = obj2->get()->GetParent()->GetTransform()->position.y + sizeDiff;
 					float b2 = obj2->get()->GetParent()->GetTransform()->position.y + obj2->get()->spriteSize.y + sizeDiff;
 
-					if(r1 - l2 > 0 && r2 - l1 > 0 && b1 - t2 > 0 && b2 - t1 > 0)
+					if (r1 - l2 > 0 && r2 - l1 > 0 && b1 - t2 > 0 && b2 - t1 > 0)
 					{
 						obj1->get()->Separate(l1, l2, r1, r2, t1, t2, b1, b2, false);
 					}
@@ -255,6 +260,11 @@ float GameInstance::GetDeltaTime() const
 void GameInstance::SetZoomScale(float value)
 {
 	zoomScale = value;
+}
+
+void GameInstance::Pause(float seconds)
+{
+	SDL_Delay(seconds * 1000);
 }
 
 SDL_Renderer* GameInstance::GetRenderer() const

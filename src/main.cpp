@@ -7,6 +7,7 @@
 #include "InputEnums.h"
 #include "Components/Collider.h"
 #include "Components/Camera.h"
+#include "Components/Flag.h"
 #include "Components/Input.h"
 #include "Components/Sprite.h"
 #include "Engine/GameInstance.h"
@@ -36,25 +37,7 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		LevelLoader::Get().LoadLevel("level.txt");
-
-		auto p1 = GameObject::CreateObject();
-		p1->AddComponent<Sprite>("ball.png", 35, 35);
-		p1->AddComponent<Input>(0.97f, 300, false, true, Player1);
-		p1->GetTransform()->position = { 0, 0 };
-		p1->AddComponent<Collider>(CIRCLE);
-
-		auto p2 = GameObject::CreateObject();
-		p2->AddComponent<Sprite>("sq.png", 35, 35);
-		p2->AddComponent<Input>(0.97f, 300, false, true, Player2);
-		p2->GetTransform()->position = { 500, 0 };
-		p2->AddComponent<Collider>(RECTANGLE);
-
-		auto camera = GameObject::CreateObject();
-		camera->AddComponent<Sprite>("camerasprite.png", 50, 50);
-		camera->AddComponent<Input>(0.97f, 1000, false, false, Player1);		// smooth, speed, lerpToMouse, allowInput, whichPlayer
-		camera->AddComponent<Camera>(glm::vec2(0, 0), TwoPlayers, p1, p2);
-		camera->GetComponent<Camera>()->moveCameraWithMouse = false;
+		LevelLoader::Get().Level(1);
 
 		// While application is running
 		while (!quit)

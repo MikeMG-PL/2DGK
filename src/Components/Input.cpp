@@ -12,6 +12,11 @@ float Input::lerp(float a, float b, float f)
 	return a * (1.0 - f) + (b * f);
 }
 
+WhichPlayer Input::GetWhichPlayer() const
+{
+	return whichPlayer;
+}
+
 void Input::ProcessInput()
 {
 	state = SDL_GetKeyboardState(NULL);
