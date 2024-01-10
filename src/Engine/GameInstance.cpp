@@ -249,7 +249,9 @@ void GameInstance::UpdateGameFixed()
 							}
 
 							if (obj1->get()->v.y < 0)
+							{
 								obj1->get()->GetParent()->GetComponent<PlayerJumping>()->isGrounded = false;
+							}
 						}
 					}
 				}
