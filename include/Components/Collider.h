@@ -18,6 +18,7 @@ public:
 	{
 	}
 
+	glm::vec2 v = {};
 	float speed = 0.4f;
 	glm::vec2 direction = glm::vec2(0, 1);
 
@@ -37,7 +38,7 @@ public:
 private:
 
 	ColliderType colliderType;
-	glm::vec2 v = {};
+
 	glm::vec2 position = {};
 	glm::vec2 screenSize = {};
 	float timeX = 0;

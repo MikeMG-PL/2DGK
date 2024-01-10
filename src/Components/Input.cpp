@@ -30,15 +30,15 @@ void Input::ProcessInput()
 	switch (whichPlayer)
 	{
 	case Player1:
-		enumUp = SDL_SCANCODE_W;
-		enumDown = SDL_SCANCODE_S;
+		//enumUp = SDL_SCANCODE_W;
+		//enumDown = SDL_SCANCODE_S;
 		enumLeft = SDL_SCANCODE_A;
 		enumRight = SDL_SCANCODE_D;
 		break;
 
 	case Player2:
-		enumUp = SDL_SCANCODE_UP;
-		enumDown = SDL_SCANCODE_DOWN;
+		//enumUp = SDL_SCANCODE_UP;
+		//enumDown = SDL_SCANCODE_DOWN;
 		enumLeft = SDL_SCANCODE_LEFT;
 		enumRight = SDL_SCANCODE_RIGHT;
 		break;

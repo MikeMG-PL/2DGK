@@ -2,6 +2,7 @@
 
 #include <random>
 
+#include "Components/PlayerJumping.h"
 #include "Components/Sprite.h"
 #include "Engine/GameObject.h"
 

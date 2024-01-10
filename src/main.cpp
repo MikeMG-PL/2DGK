@@ -9,6 +9,7 @@
 #include "Components/Camera.h"
 #include "Components/Flag.h"
 #include "Components/Input.h"
+#include "Components/PlayerJumping.h"
 #include "Components/Sprite.h"
 #include "Engine/GameInstance.h"
 #include "Engine/GameObject.h"
@@ -27,7 +28,7 @@ int main(int argc, char* args[])
 	SDL_Event e;
 
 	// Framerate
-	const int FPS = 144;
+	const int FPS = 60;
 	const float FRAMETIME = 1000.0f / FPS;
 
 	// Start up SDL and create window
@@ -37,7 +38,27 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		LevelLoader::Get().Level(1);
+		LevelLoader::Get().LoadLevel("platform.txt");
+
+		auto p1 = GameObject::CreateObject();
+		p1->AddComponent<Sprite>("ball.png", 35, 35);
+		p1->AddComponent<Input>(0.97f, 300, false, true, Player1);
+		p1->GetTransform()->position = { 0, 0 };
+		p1->AddComponent<Collider>(CIRCLE);
+		p1->AddComponent<PlayerJumping>();
+
+		auto p2 = GameObject::CreateObject();
+		p2->AddComponent<Sprite>("ball.png", 35, 35);
+		p2->AddComponent<Input>(0.97f, 300, false, true, Player2);
+		p2->GetTransform()->position = { 70, -150 };
+		p2->AddComponent<Collider>(CIRCLE);
+		p2->AddComponent<PlayerJumping>();
+
+		auto camera = GameObject::CreateObject();
+		camera->AddComponent<Sprite>("camerasprite.png", 50, 50);
+		camera->AddComponent<Input>(0.97f, 1000, false, false, Player1);		// smooth, speed, lerpToMouse, allowInput, whichPlayer
+		camera->AddComponent<Camera>(glm::vec2(0, 0), TwoPlayers, p1, p2);
+		camera->GetComponent<Camera>()->moveCameraWithMouse = false;
 
 		// While application is running
 		while (!quit)

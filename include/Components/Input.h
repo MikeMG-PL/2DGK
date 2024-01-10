@@ -34,13 +34,13 @@ public:
 	glm::vec2 GetMousePosition();
 	void Update() override;
 	glm::vec2 GetVelocity() const;
-
+	glm::vec2 velocity = {};
 private:
 
 	WhichPlayer whichPlayer;
 	const Uint8* state = 0;
 	glm::vec2 inputDirection = {};
-	glm::vec2 velocity = {};
+	
 	glm::vec2 lastMouse = {};
 	glm::vec2 startPosition = {};
 	bool smoothMovement = true;

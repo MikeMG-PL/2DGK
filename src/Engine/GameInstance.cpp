@@ -4,6 +4,7 @@
 
 #include "Components/Collider.h"
 #include "Components/Camera.h"
+#include "Components/PlayerJumping.h"
 #include "Components/Sprite.h"
 #include "Engine/Component.h"
 #include "Engine/GameObject.h"
@@ -186,6 +187,8 @@ void GameInstance::UpdateGameFixed()
 					glm::vec2 c = obj1->get()->center;
 					float rad = obj1->get()->radius;
 
+					glm::vec2 fakePassCenter = { obj1->get()->center.x, obj1->get()->center.y + 5 };
+
 					const float sizeDiff = obj1->get()->radius - obj2->get()->radius;
 
 					float l = obj2->get()->GetParent()->GetTransform()->position.x + sizeDiff;
@@ -196,13 +199,58 @@ void GameInstance::UpdateGameFixed()
 
 					glm::vec2 f = { glm::clamp(c.x, l, r), glm::clamp(c.y, t, b) };
 
-					const float cflength = glm::distance(c, f);
+					// REAL PASS
+					float cflength = glm::distance(c, f);
 
 					if (cflength < rad)
 					{
 						obj1->get()->Separate(c, rad, f, l, r, t, b, false);
 						if (!obj2->get()->isWall)
 							obj2->get()->Separate(c, rad, f, l, r, t, b, true);
+					}
+					else
+					{
+						obj1->get()->v = { 0,0 };
+						obj2->get()->v = { 0,0 };
+					}
+
+					if (obj1->get()->v.y < 0)
+					{
+						obj1->get()->GetParent()->GetComponent<PlayerJumping>()->isGrounded = true;
+						obj1->get()->v.y = 0;
+					}
+					else // IF GRAVITY GOT DISABLED
+					{
+						// FAKE PASS
+						c = fakePassCenter;
+						cflength = glm::distance(c, f);
+
+						if (cflength < rad)
+						{
+							if (c == f)
+							{
+								float left = c.x - l + rad;
+								float right = r - c.x + rad;
+								float top = c.y - t + rad;
+								float bottom = b - c.y + rad;
+
+								left < right ? obj1->get()->v.x = -left : obj1->get()->v.x = right;
+								top < bottom ? obj1->get()->v.y = -top : obj1->get()->v.y = bottom;
+
+								if (abs(obj1->get()->v.x) < abs(obj1->get()->v.y))
+									obj1->get()->v.y = 0;
+
+								if (abs(obj1->get()->v.x) > abs(obj1->get()->v.y))
+									obj1->get()->v.x = 0;
+							}
+							else
+							{
+								obj1->get()->v = normalize(c - f) * (rad - glm::length(c - f));
+							}
+
+							if (obj1->get()->v.y < 0)
+								obj1->get()->GetParent()->GetComponent<PlayerJumping>()->isGrounded = false;
+						}
 					}
 				}
 
