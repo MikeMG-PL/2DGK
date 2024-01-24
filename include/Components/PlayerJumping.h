@@ -11,9 +11,9 @@ public:
 	bool incrementedJumps = false;
 	int jumps = 0;
 	int maxJumps = 40;
-	float h = 100;
+	float h = 32;
 	float vx = 300.0f * 0.01f;
-	float xh = 150;
+	float xh = 64;
 
 	//glm::vec2 gravForce = {};
 	bool isGrounded = false;

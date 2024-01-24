@@ -9,6 +9,8 @@
 #include "Components/Camera.h"
 #include "Components/Flag.h"
 #include "Components/Input.h"
+#include "Components/Parallax.h"
+#include "Components/ParallaxManager.h"
 #include "Components/PlayerJumping.h"
 #include "Components/Sprite.h"
 #include "Engine/GameInstance.h"
@@ -38,19 +40,31 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		LevelLoader::Get().LoadLevel("platform.txt");
+		LevelLoader::Get().LoadLevel("final.txt");
+
+		const auto l3 = GameObject::CreateObject();
+		l3->AddComponent<Sprite>("3.png", 6400, 2240);
+		l3->GetTransform()->position = { 3184, 16 };
+
+		const auto l2 = GameObject::CreateObject();
+		l2->AddComponent<Sprite>("2.png", 6400, 2240);
+		l2->GetTransform()->position = { 3184, 16 };
+
+		const auto l1 = GameObject::CreateObject();
+		l1->AddComponent<Sprite>("1.png", 6400, 2240);
+		l1->GetTransform()->position = { 3184, 16 };
 
 		auto p1 = GameObject::CreateObject();
-		p1->AddComponent<Sprite>("ball.png", 50, 50);
+		p1->AddComponent<Sprite>("Julia.png", 32, 32);
 		p1->AddComponent<Input>(0, 300, false, true, Player1);
-		p1->GetTransform()->position = { 70, 175 };
+		p1->GetTransform()->position = { 3064, -100 };
 		p1->AddComponent<Collider>(CIRCLE);
 		p1->AddComponent<PlayerJumping>();
 
 		auto p2 = GameObject::CreateObject();
-		p2->AddComponent<Sprite>("ball.png", 50, 50);
+		p2->AddComponent<Sprite>("Mason.png", 32, 32);
 		p2->AddComponent<Input>(0, 300, false, true, Player2);
-		p2->GetTransform()->position = { 150, 150 };
+		p2->GetTransform()->position = { 3100, -100 };
 		p2->AddComponent<Collider>(CIRCLE);
 		p2->AddComponent<PlayerJumping>();
 
@@ -59,6 +73,12 @@ int main(int argc, char* args[])
 		camera->AddComponent<Input>(0.97f, 1000, false, false, Player1);		// smooth, speed, lerpToMouse, allowInput, whichPlayer
 		camera->AddComponent<Camera>(glm::vec2(0, 0), TwoPlayers, p1, p2);
 		camera->GetComponent<Camera>()->moveCameraWithMouse = false;
+
+		l3->AddComponent<Parallax>(50, p1->GetComponent<Input>(), p2->GetComponent<Input>(), 1);
+		l2->AddComponent<Parallax>(100, p1->GetComponent<Input>(), p2->GetComponent<Input>(), -1);
+
+		const auto parallaxManager = GameObject::CreateObject();
+		parallaxManager->AddComponent<ParallaxManager>(l3->GetComponent<Parallax>(), l2->GetComponent<Parallax>());
 
 		// While application is running
 		while (!quit)

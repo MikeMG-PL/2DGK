@@ -30,96 +30,89 @@ void PlayerJumping::Update()
 
 	Gravity();
 
-	if (input->GetWhichPlayer() == Player1)
-	{
-		std::cout << "h: " << h << std::endl;
-		std::cout << "xh: " << xh << std::endl;
-		std::cout << "maxJumps: " << maxJumps << std::endl;
-	}
-
-	static bool tPressed = false;
-	if (state[SDL_SCANCODE_T])
-	{
-		if (!tPressed)
-		{
-			h -= 50;
-		}
-		tPressed = true;
-	}
-	else
-	{
-		tPressed = false;
-	}
-
-	static bool yPressed = false;
-	if (state[SDL_SCANCODE_Y])
-	{
-		if (!yPressed)
-		{
-			h += 50;
-		}
-		yPressed = true;
-	}
-	else
-	{
-		yPressed = false;
-	}
-
-	static bool uPressed = false;
-	if (state[SDL_SCANCODE_U])
-	{
-		if (!uPressed)
-		{
-			xh -= 50;
-		}
-		uPressed = true;
-	}
-	else
-	{
-		uPressed = false;
-	}
-
-	static bool iPressed = false;
-	if (state[SDL_SCANCODE_I])
-	{
-		if (!iPressed)
-		{
-			xh += 50;
-		}
-		iPressed = true;
-	}
-	else
-	{
-		iPressed = false;
-	}
-
-	static bool zPressed = false;
-	if (state[SDL_SCANCODE_Z])
-	{
-		if (!zPressed)
-		{
-			maxJumps = glm::clamp(maxJumps - 10, 1, 1000);
-		}
-		zPressed = true;
-	}
-	else
-	{
-		zPressed = false;
-	}
-
-	static bool xPressed = false;
-	if (state[SDL_SCANCODE_X])
-	{
-		if (!xPressed)
-		{
-			maxJumps += 10;
-		}
-		xPressed = true;
-	}
-	else
-	{
-		xPressed = false;
-	}
+	// static bool tPressed = false;
+	// if (state[SDL_SCANCODE_T])
+	// {
+	// 	if (!tPressed)
+	// 	{
+	// 		h -= 50;
+	// 	}
+	// 	tPressed = true;
+	// }
+	// else
+	// {
+	// 	tPressed = false;
+	// }
+	//
+	// static bool yPressed = false;
+	// if (state[SDL_SCANCODE_Y])
+	// {
+	// 	if (!yPressed)
+	// 	{
+	// 		h += 50;
+	// 	}
+	// 	yPressed = true;
+	// }
+	// else
+	// {
+	// 	yPressed = false;
+	// }
+	//
+	// static bool uPressed = false;
+	// if (state[SDL_SCANCODE_U])
+	// {
+	// 	if (!uPressed)
+	// 	{
+	// 		xh -= 50;
+	// 	}
+	// 	uPressed = true;
+	// }
+	// else
+	// {
+	// 	uPressed = false;
+	// }
+	//
+	// static bool iPressed = false;
+	// if (state[SDL_SCANCODE_I])
+	// {
+	// 	if (!iPressed)
+	// 	{
+	// 		xh += 50;
+	// 	}
+	// 	iPressed = true;
+	// }
+	// else
+	// {
+	// 	iPressed = false;
+	// }
+	//
+	// static bool zPressed = false;
+	// if (state[SDL_SCANCODE_Z])
+	// {
+	// 	if (!zPressed)
+	// 	{
+	// 		maxJumps = glm::clamp(maxJumps - 10, 1, 1000);
+	// 	}
+	// 	zPressed = true;
+	// }
+	// else
+	// {
+	// 	zPressed = false;
+	// }
+	//
+	// static bool xPressed = false;
+	// if (state[SDL_SCANCODE_X])
+	// {
+	// 	if (!xPressed)
+	// 	{
+	// 		maxJumps += 10;
+	// 	}
+	// 	xPressed = true;
+	// }
+	// else
+	// {
+	// 	xPressed = false;
+	// }
 
 	if (isGrounded)
 		jumps = 0;
