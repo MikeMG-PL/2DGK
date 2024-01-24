@@ -1,5 +1,12 @@
 #include "Components/ParallaxManager.h"
 
+void ParallaxManager::Start()
+{
+	Component::Start();
+
+	std::cout << "Use: T, Y, U, I for adjusting parallax speeds." << std::endl;
+}
+
 void ParallaxManager::Update()
 {
 	Component::Update();
